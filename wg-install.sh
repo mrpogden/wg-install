@@ -11,7 +11,7 @@
 #sudo add-apt-repository ppa:wireguard/wireguard -y
 
 # update/upgrade server and refresh repo
-sudo apt update -y && apt upgrade -y &&
+sudo apt update -y && sudo apt upgrade -y &&
 
 # install wireguard
 sudo apt install wireguard -y  &&
