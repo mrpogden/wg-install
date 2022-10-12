@@ -7,17 +7,17 @@
 # Also change the IPs, IP ranges, and listening port if desired
 # iptables-persistent currently requires user input
 
-# add wireguard repo
+# add wireguard repo - Not needed for Ubuntu 20.04
 #sudo add-apt-repository ppa:wireguard/wireguard -y
 
 # update/upgrade server and refresh repo
-sudo apt update -y && apt upgrade -y
-sleep 20
+sudo apt update -y && apt upgrade -y &&
+
 # install wireguard
-sudo apt install wireguard -y  
-sleep 5
+sudo apt install wireguard -y  &&
+
 # Generate QR codes for configs.
-sudo apt install qrencode -y
+sudo apt install qrencode -y &&
 sleep 5
 
 # Generate keys 
@@ -58,7 +58,7 @@ AllowedIPs = 10.200.200.4/32
 
 sleep 2
 
- # enable IPv4 forwarding
+# enable IPv4 forwarding
 sudo sed -i 's/\#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 # negate the need to reboot after the above change
 sudo sysctl -p
@@ -88,8 +88,8 @@ sudo netfilter-persistent save
 
 
 # install Unbound DNS
-sudo apt install unbound unbound-host -y
-sleep 5
+sudo apt install unbound unbound-host -y &&
+sleep 2
 
 # download list of DNS root servers
 sudo curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
