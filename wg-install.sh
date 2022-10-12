@@ -11,14 +11,14 @@
 #sudo add-apt-repository ppa:wireguard/wireguard -y
 
 # update/upgrade server and refresh repo
-sudo apt update -y && sudo apt upgrade -y &&
+sudo apt update -y && sudo apt upgrade -y && continue
 
 # install wireguard
-sudo apt install wireguard -y  &&
+sudo apt install wireguard -y  && continue
 
 # Generate QR codes for configs.
-sudo apt install qrencode -y &&
-sleep 5
+sudo apt install qrencode -y && continue
+sleep 2
 
 # Generate keys 
 umask 077 && 
@@ -52,9 +52,9 @@ AllowedIPs = 10.200.200.4/32
 "| sudo tee /etc/wireguard/wg0.conf
 
 # Do we need a reboot here?
- sleep 5
+sleep 2
 
- sudo wg-quick up wg0 && sudo systemctl enable wg-quick@wg0.service
+sudo wg-quick up wg0 && sudo systemctl enable wg-quick@wg0.service && continue
 
 sleep 2
 
@@ -63,7 +63,7 @@ sudo sed -i 's/\#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 # negate the need to reboot after the above change
 sudo sysctl -p
 sudo echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
-sleep 5
+sleep 3
 
 # Track VPN connection
 sudo iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -79,16 +79,16 @@ sudo iptables -A INPUT -s 10.200.200.0/24 -p udp -m udp --dport 53 -m conntrack 
 # Allow forwarding of packets that stay in the VPN tunnel
 sudo iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 
-sleep 5
+sleep 2
 
 # make firewall changes persistent
-sudo apt install iptables-persistent -y &&
+sudo apt install iptables-persistent -y && continue
 sudo systemctl enable netfilter-persistent &&
 sudo netfilter-persistent save
 
 
 # install Unbound DNS
-sudo apt install unbound unbound-host -y &&
+sudo apt install unbound unbound-host -y && continue
 sleep 2
 
 # download list of DNS root servers
